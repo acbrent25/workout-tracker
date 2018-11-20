@@ -1,24 +1,23 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var passport   = require('passport');
-var session    = require('express-session');
-var bodyParser = require('body-parser');
-var env = require('dotenv').load();
+var express       = require('express');
+var path          = require('path');
+var favicon       = require('serve-favicon');
+var logger        = require('morgan');
+var cookieParser  = require('cookie-parser');
+var passport      = require('passport');
+var session       = require('express-session');
+var bodyParser    = require('body-parser');
+var env           = require('dotenv').load();
+var app           = express();
+LocalStrategy     = require("passport-local");
+User              = require("./models/user");
 
 // Database
 var db = require('./models');
 
-
-
-var app = express();
-
 //Routes
 var index = require('./routes/index');
 var users = require('./routes/users');
-var authRoute = require('./routes/auth.js');
+var authRoute = require('./routes/auth.js')(app);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -31,11 +30,17 @@ app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// For Passport
- 
-app.use(session({ secret: 'keyboard rogerman',resave: true, saveUninitialized:true})); // session secret
+// PASSPORT CONFIGURATION
+app.use(require("express-session")({
+  secret: "Rogerman is the best dog",
+  resave: false,
+  saveUninitialized: false
+}));
+
 app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
+app.use(passport.session());
+
+
 
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
