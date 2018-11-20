@@ -1,6 +1,8 @@
-var exports = module.exports = {}
+const db = require("../models");
 
-exports.signup = function (req, res) {
-
-    res.render('signup')
-}
+// Defining methods for the booksController
+module.exports = {
+  signup: function(req, res) {
+    res.render('signup');
+  }
+};
