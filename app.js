@@ -7,10 +7,11 @@ var passport      = require('passport');
 var session       = require('express-session');
 var bodyParser    = require('body-parser');
 var env           = require('dotenv').load();
+var routes        = require('./routes');
 var app           = express();
 LocalStrategy     = require("passport-local");
 User              = require("./models/user");
-var routes = require('./routes');
+
 
 // Database
 var db = require('./models');
@@ -21,6 +22,8 @@ app.use(logger('dev'));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use(routes);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -40,7 +43,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-app.use(routes);
+
 
 
 // catch 404 and forward to error handler
