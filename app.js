@@ -10,7 +10,6 @@ var env           = require('dotenv').load();
 var routes        = require('./routes');
 var app           = express();
 LocalStrategy     = require("passport-local");
-User              = require("./models/user");
 
 
 // Database
@@ -23,7 +22,7 @@ app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(routes);
+app.use('/', routes);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

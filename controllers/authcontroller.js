@@ -1,5 +1,9 @@
 
-module.exports.signup = function (req, res) {
+const db = require("../models");
 
-    res.render('signup', { title: 'Signup' })
-}
+// Defining methods for the authControler
+module.exports = {
+  signUp: function(req, res) {
+    res.render('signup', { title: 'Signup' });
+  },
+};
