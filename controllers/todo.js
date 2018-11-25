@@ -18,7 +18,7 @@ module.exports = {
           as: 'todoItems',
         }],
       })
-      .then(todos => res.status(200).send(todos))
+      .then(todos => res.status(200).send({todos:todos}))
       .catch(error => res.status(400).send(error));
   },
   retrieve(req, res) {
