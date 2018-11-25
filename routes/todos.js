@@ -36,6 +36,12 @@ router.delete('/api/todos/:todoId', todosController.destroy);
 ***************************/
 // Todo Items Create
 router.post('/api/todos/:todoId/items', todoItemsController.create);
+
+// Todo Items Update
+router.put('/api/todos/:todoId/items/:todoItemId', todoItemsController.update);
+
+// Todo Items Delete
+router.delete('/api/todos/:todoId/items/:todoItemId', todoItemsController.destroy);
   
 
   module.exports = router;
