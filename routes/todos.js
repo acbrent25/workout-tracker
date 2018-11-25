@@ -8,19 +8,15 @@ const Todo = require('../models').Todo;
 const TodoItem = require('../models').TodoItem;
 
 //INDEX ROUTE - SHOW ALL TODOS
-router.get('/', async (req, res, next) => {
-    //see message is passed to index.ejs and ejs will take care of rendering it
-    //so same way you can load your api data here like:  
-    try {
-       const data = axios.get('/api/todos');
-       console.log(Object.keys(data));
-       //now pass apiData to index.ejs to take care of it
-       res.render('index',{title:"Hello World!", data: data});
-    }
-    catch (e){
-       //render your error.ejs here
-    }
-});
+router.get('/', function(req, res) {
+    Todo.findAll({})
+    .then(function(todos) {
+      res.render('index', {
+        title: 'Sequelize: Express Example',
+        todos: todos
+      });
+    });
+  });
 
 
 router.get('/api', (req, res) => res.status(200).send({
