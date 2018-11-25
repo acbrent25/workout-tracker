@@ -8,10 +8,34 @@ const todoItemsController = require('../controllers').todoItems;
     message: 'Welcome to the Todos API!',
   }));
 
-  router.post('/api/todos', todosController.create);
-  router.get('/api/todos', todosController.list);
   
-  // Todo Items Create
-  router.post('/api/todos/:todoId/items', todoItemsController.create);
+  
+  
+
+/**************************
+    TODO CRUD
+***************************/
+
+// Create Todo
+router.post('/api/todos', todosController.create);
+  
+// Read Todo (single)
+router.get('/api/todos/:todoId', todosController.retrieve);
+
+// Read Todos (all)
+router.get('/api/todos', todosController.list);
+
+// Update Todo
+router.put('/api/todos/:todoId', todosController.update);
+
+// Delete Todo 
+router.delete('/api/todos/:todoId', todosController.destroy);
+
+/**************************
+        TODO ITEMS CRUD
+***************************/
+// Todo Items Create
+router.post('/api/todos/:todoId/items', todoItemsController.create);
+  
 
   module.exports = router;
