@@ -9,11 +9,16 @@ const TodoItem = require('../models').TodoItem;
 
 //INDEX ROUTE - SHOW ALL TODOS
 router.get('/', function(req, res) {
-    Todo.findAll({})
+    Todo.findAll({
+        include: [{
+          model: TodoItem,
+          as: 'todoItems',
+        }],
+      })
     .then(function(todos) {
       res.render('index', {
         title: 'Sequelize: Express Example',
-        todos: todos
+        todos: todos,
       });
     });
   });
