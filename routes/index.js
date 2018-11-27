@@ -3,6 +3,7 @@ var router = express.Router();
 
 const auth = require('./auth');
 const todos= require('./todos');
+const dashboard= require('./dashboard');
 
 //Home Page
 // router.get("/", function(req, res, next){
@@ -14,5 +15,7 @@ const todos= require('./todos');
 router.use(auth);
 
 router.use(todos);
+
+router.use(dashboard);
 
 module.exports = router;

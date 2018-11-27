@@ -2,7 +2,6 @@
 var router = require('express').Router();
 const todosController = require('../controllers').todos;
 const todoItemsController = require('../controllers').todoItems;
-const axios = require('axios');
 
 const Todo = require('../models').Todo;
 const TodoItem = require('../models').TodoItem;

@@ -1,10 +1,12 @@
 
 var router = require('express').Router();
+var passport = require("passport");
 var authController = require('../controllers').authController;
 
-router.route("/signup").get(authController.signUp);
+router.get("/register", function(req, res){
+   res.render("register", {title: "Register"});
+});
 
-router.route("/login").get(authController.logIn);
 
 module.exports = router;
 
