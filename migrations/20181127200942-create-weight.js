@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Weights', {
+    return queryInterface.createTable('Weight', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -20,10 +20,10 @@ module.exports = {
         type: Sequelize.DATE
       },
       userId: {
+         type: Sequelize.INTEGER,
          allowNull: false,
-         type: Sequelize.UUID,
          references: {
-           model: 'User',
+           model: 'Users',
            key: 'id',
          },
        }

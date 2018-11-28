@@ -22,7 +22,7 @@ module.exports = function(sequelize, DataTypes) {
     }
   });
  User.associate = (models) => {
-   User.hasMany(models.Weights, {});
+   models.User.hasMany(models.Weight, {});
  };
 
   // Creating a custom method for our User model. 
