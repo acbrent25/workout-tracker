@@ -43,6 +43,13 @@ app.use(passport.session());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+// Send current user to every template
+app.use(function(req, res, next){
+   res.locals.currentUser = req.user;
+   next();
+});
+
 // Requiring our routes
 app.use('/', routes);
 

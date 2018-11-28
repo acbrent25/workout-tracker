@@ -3,47 +3,51 @@ var router = require('express').Router();
 
 var authController = require('../controllers').authController;
 
-router.get("/register", function(req, res){
-   res.render("register", {title: "Register"});
-});
-
 // Requiring our models and passport as we've configured it
 var db = require("../models");
-var passport = require("../config/middleware/passport");
-//
+var passport = require("passport");
 
-  // Using the passport.authenticate middleware with our local strategy.
-  // If the user has valid login credentials, send them to the members page.
-  // Otherwise the user will be sent an error
-  router.post("/api/login", passport.authenticate("local"), function(req, res) {
-    // Since we're doing a POST with javascript, we can't actually redirect that post into a GET request
-    // So we're sending the user back the route to the members page because the redirect will happen on the front end
-    // They won't get this or even be able to access this page if they aren't authed
-    res.json("/members");
-  });
-//
-  // Route for signing up a user. The user's password is automatically hashed and stored securely thanks to
-  // how we configured our Sequelize User Model. If the user is created successfully, proceed to log the user in,
-  // otherwise send back an error
-  router.post("/api/signup", function(req, res) {
-    console.log(req.body);
-    db.User.create({
+
+
+// SHOW REGISTER FORM
+router.get("/register", function(req, res){
+   res.render("register", {title: 'register'});
+});
+
+// SIGNUP LOGIC
+router.post("/register", function(req, res){
+   db.User.create({
       email: req.body.email,
       password: req.body.password
     }).then(function() {
-      res.redirect(307, "/api/login");
+      res.redirect("/dashboard");
     }).catch(function(err) {
       console.log(err);
-      res.json(err);
-      // res.status(422).json(err.errors[0].message);
+      return res.render("register", {title: "Register"});
     });
-  });
-//
-  // Route for logging user out
-  router.get("/logout", function(req, res) {
-    req.logout();
-    res.redirect("/");
-  });
+});
+
+// SHOW LOGIN FORM
+router.get("/login", function(req, res){
+   res.render("login", {title: "Login"});
+});
+
+ 
+// LOGIN LOGIC
+router.post("/login", passport.authenticate("local", 
+    {
+        successRedirect: "/dashboard",
+        failureRedirect: "/login",
+    }), function(req, res){
+    
+});
+
+
+// Route for logging user out
+router.get("/logout", function(req, res) {
+   req.logout();
+   res.redirect("/");
+});
 //
   // Route for getting some data about our user to be used client side
   router.get("/api/user_data", function(req, res) {
@@ -61,37 +65,8 @@ var passport = require("../config/middleware/passport");
     }
   });
 
-
-
-//   HTML Routes
-// Requiring path to so we can use relative routes to our HTML files
-var path = require("path");
-//
-// Requiring our custom middleware for checking if a user is logged in
-var isAuthenticated = require("../config/middleware/isAuthenticated");
-//
-
-//
-  router.get("/dashboard", function(req, res) {
-    // If the user already has an account send them to the members page
-    if (req.user) {
-      res.redirect("/dashboard");
-    }
-    res.render("dashboard", {title: "dashboard"});
-  });
-//
-  router.get("/login", function(req, res) {
-    // If the user already has an account send them to the members page
-    if (req.user) {
-      res.redirect("/dashboard");
-    }
-    res.render("login", {title: "login"});
-  });
-//
-  // Here we've add our isAuthenticated middleware to this route.
-  // If a user who is not logged in tries to access this route they will be 
   //redirected to the signup page
-  router.get("/dashboard", isAuthenticated, function(req, res) {
+  router.get("/dashboard", function(req, res) {
    res.render("dashboard", {title: "dashboard"});
   });
 
