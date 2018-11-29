@@ -1,9 +1,6 @@
 
 var router = require('express').Router();
 
-var authController = require('../controllers').authController;
-
-// Requiring our models and passport as we've configured it
 var db = require("../models");
 var passport = require("passport");
 
@@ -17,10 +14,11 @@ router.get("/register", function(req, res){
 // SIGNUP LOGIC
 router.post("/register", function(req, res){
    db.User.create({
+     username: req.body.username,
       email: req.body.email,
       password: req.body.password
     }).then(function() {
-      res.redirect("/dashboard");
+      res.redirect("/login");
     }).catch(function(err) {
       console.log(err);
       return res.render("register", {title: "Register"});
