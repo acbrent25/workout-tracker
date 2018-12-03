@@ -63,10 +63,6 @@ router.get("/logout", function(req, res) {
     }
   });
 
-  //redirected to the signup page
-  router.get("/dashboard", function(req, res) {
-   res.render("dashboard", {title: "dashboard"});
-  });
 
 
 

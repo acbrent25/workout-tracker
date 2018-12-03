@@ -32,6 +32,10 @@ router.get('/api', (req, res) => res.status(200).send({
 ***************************/
 
 // Create Todo
+router.post('/create/todo', todosController.create);
+
+
+// Create Todo
 router.post('/api/todos', todosController.create);
   
 // Read Todo (single)
