@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Weight', {
+    return queryInterface.createTable('Weights', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       weight: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -18,15 +18,7 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      },
-      userId: {
-         type: Sequelize.INTEGER,
-         allowNull: false,
-         references: {
-           model: 'Users',
-           key: 'id',
-         },
-       }
+      }
     });
   },
   down: (queryInterface, Sequelize) => {
