@@ -15,6 +15,35 @@ router.get('/weights', isAuthenticated, function(req, res) {
     });
   });
 
+  router.post('/weights', isAuthenticated, function(req, res){
+    Weight.create({
+      weight: req.body.weight,
+      userId: req.user.id,
+    })
+    .then(function(weight){
+      res.render('weights', {title: 'Weights'});
+    });
+  });
+
+
+  router.get('/weights/:id', isAuthenticated, function(req, res) {
+    Weight.findOne({
+      where: {
+        id: req.params.id
+      },
+      include: ['user']
+    })
+    .then(function(weights) {
+      res.render('weights', {
+        title: 'Weight',
+        weight: weight,
+        user: user,
+      });
+    });
+  });
+
+
+
 /**************************
     Weight CRUD API
 ***************************/

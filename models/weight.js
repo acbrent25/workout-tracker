@@ -1,12 +1,13 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Weight = sequelize.define('Weight', {
-    weight: DataTypes.INTEGER
-  }, {});
+    weight: DataTypes.INTEGER,
+  });
   Weight.associate = function(models) {
     // associations can be defined here
     Weight.belongsTo(models.User, {
-       foreignKey: 'id',
+      foreignKey: 'userId',
+      onDelete: 'CASCADE',
     });
   };
   return Weight;
