@@ -19,9 +19,14 @@
 <div class="container">
    <div class="row">
       <div class="col">
+        <ul>
+          <% for (var i = 0; i < users.length; i++) { %>
+            <li><%= users[i].username %></li>
+          <% } %>
+        </ul>
          <ul>
             <% for (var i = 0; i < weights.length; i++) { %>
-              <li><%= weights[i].createdAt.toDateString(); %>: <%= weights[i].weight %> lbs</li>
+              <li><%= weights[i].username %> <%= weights[i].createdAt.toDateString(); %>: <%= weights[i].weight %> lbs</li>
             <% } %>
         </ul>
       </div>

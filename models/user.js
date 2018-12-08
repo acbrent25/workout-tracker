@@ -28,7 +28,7 @@ module.exports = function(sequelize, DataTypes) {
    // associations can be defined here
    User.hasMany(models.Weight, {
      foreignKey: 'userId',
-     as: 'user',
+     as: 'users',
    });
  };
 

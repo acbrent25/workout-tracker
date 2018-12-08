@@ -1,16 +1,23 @@
 var router = require('express').Router();
 
 const Weight = require('../models').Weight;
+const User = require('../models').User;
 const weightsController = require('../controllers').weights;
 const isAuthenticated = require('../config/middleware/isAuthenticated');
 
 //INDEX ROUTE - SHOW ALL TODOS
 router.get('/weights', isAuthenticated, function(req, res) {
-    Weight.findAll()
+    Weight.findAll({
+      include: [{
+        model: User,
+        as: 'users'
+      }]
+    })
     .then(function(weights) {
       res.render('weights', {
         title: 'Weight',
         weights: weights,
+        userId: weights.userId,
       });
     });
   });
