@@ -13,10 +13,7 @@ module.exports = {
   list(req, res) {
     return Todo
     .findAll({
-        include: [{
-          model: TodoItem,
-          as: 'todoItems',
-        }],
+      include: [TodoItem],
       })
       .then(todos => res.status(200).send({todos:todos}))
       .catch(error => res.status(400).send(error));

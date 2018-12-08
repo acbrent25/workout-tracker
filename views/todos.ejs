@@ -19,9 +19,9 @@
  <div class="container">
    <div class="row">
      <div class="col">
-        <ul>
-            
-        </ul>
+        <div id="todosWell">
+
+        </div>
      </div>
    </div>
  </div>
@@ -35,31 +35,74 @@
     // Handle New Todo
     var addTodoForm = $('#addTodo');
     var titleInput = $('#todo');
+    var todosWell = $('#todosWell');
 
+    /********************************************
+    *           SHOW TODOS
+    * ******************************************/
+    function getTodos(){
+      $.get("/api/todos", function(data){
+        
+        var ul = $('<ul/>', {
+          id: 'todo_ul'
+        }).appendTo('#todosWell');
+
+        console.log(data);
+        todos = data;
+        todosObj = todos.todos;
+        console.log("todos: " + todos.todos[1].id);
+        console.log("hello todo");
+        for(var i = 0; i < todosObj.length; i++){
+          console.log('inside for loop');
+          var li = $('<li/>', {
+            id: todosObj[i].id,
+            text: todosObj[i].title
+          }).appendTo('#todo_ul');
+        }  
+
+      });
+    }
+
+    getTodos();
+    
+    function initializeTodos(todos){
+      var counter = 0;
+      for(var i = 0; i < todos.length; i++){
+        console.log(todos[1]);
+          counter++;
+          console.log(counter);
+      }
+    }
+      
+   
+
+  
+
+
+    /********************************************
+     *            CREATE TODO
+     * ******************************************/
     $(addTodoForm).on('submit', handleFormSubmit);
-
     function handleFormSubmit(e){
       e.preventDefault();
-      
       // If Todo Title is empty, don't submit
       if(!titleInput){
         return;
       }
-
-      // Contstruct Tod
+      // Contstruct Todo
       var newTodo = {
         title: titleInput.val().trim()
       }
-
       submitTodo(newTodo);
-
     }
-
+    // Submit the Todo
     function submitTodo(post){
       $.post("/api/todos", post, function(){
         window.location.href = "/todos";
       });
     }
+
+
 
 
 
