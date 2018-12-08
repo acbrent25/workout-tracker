@@ -6,8 +6,9 @@ module.exports = (sequelize, DataTypes) => {
   Weight.associate = function(models) {
     // associations can be defined here
     Weight.belongsTo(models.User, {
-      foreignKey: 'userId',
-      onDelete: 'CASCADE',
+      foreignKey: {
+        allowNull: false
+      }
     });
   };
   return Weight;

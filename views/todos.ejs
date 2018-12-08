@@ -1,0 +1,67 @@
+<% include partials/header %>
+
+<div class="jumbotron">
+   <h1 class="display-4"><%= title %></h1>
+   <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+   <hr class="my-4">
+   <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+   <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+ </div>
+
+ <form id="addTodo">
+  <div class="form-group">
+    <input type="text" class="form-control" id="todo" name="title" aria-describedby="todo" placeholder="Enter todo">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+ <div class="container">
+   <div class="row">
+     <div class="col">
+        <ul>
+            
+        </ul>
+     </div>
+   </div>
+ </div>
+
+<% include partials/footer %>
+
+<script>
+  $(document).ready(function(){
+    console.log('todo view');
+
+    // Handle New Todo
+    var addTodoForm = $('#addTodo');
+    var titleInput = $('#todo');
+
+    $(addTodoForm).on('submit', handleFormSubmit);
+
+    function handleFormSubmit(e){
+      e.preventDefault();
+      
+      // If Todo Title is empty, don't submit
+      if(!titleInput){
+        return;
+      }
+
+      // Contstruct Tod
+      var newTodo = {
+        title: titleInput.val().trim()
+      }
+
+      submitTodo(newTodo);
+
+    }
+
+    function submitTodo(post){
+      $.post("/api/todos", post, function(){
+        window.location.href = "/todos";
+      });
+    }
+
+
+
+  });
+</script>

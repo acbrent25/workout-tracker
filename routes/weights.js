@@ -1,61 +1,61 @@
 var router = require('express').Router();
 
-const Weight = require('../models').Weight;
-const User = require('../models').User;
-const weightsController = require('../controllers').weights;
+
+const db = require('../models');
 const isAuthenticated = require('../config/middleware/isAuthenticated');
 
-//INDEX ROUTE - SHOW ALL TODOS
-router.get('/weights', isAuthenticated, function(req, res) {
-    Weight.findAll({
-      include: [{
-        model: User,
-        as: 'users'
-      }]
-    })
-    .then(function(weights) {
-      res.render('weights', {
-        title: 'Weight',
-        weights: weights,
-        userId: weights.userId,
-      });
+// SHOW 
+router.get('/api/weights', isAuthenticated, function(req, res) {
+    db.Weight.findAll({
+      include: [db.User]
+    }).then(function(dbWeight) {
+      res.json(dbWeight);
     });
   });
 
-  router.post('/weights', isAuthenticated, function(req, res){
-    Weight.create({
-      weight: req.body.weight,
-      userId: req.user.id,
-    })
-    .then(function(weight){
-      res.render('weights', {title: 'Weights'});
-    });
+// CREATE 
+router.post('/api/weights', isAuthenticated, function(req, res){
+  db.Post.create(req.body).then(function(dbWeight) {
+    res.json(dbWeight);
   });
+});
 
+// READ
+router.get('/api/weights/:id', isAuthenticated, function(req, res) {
+  db.Weight.findOne({
+    where: {
+      id: req.params.id
+    },
+    include: [db.Author]
+  }).then(function(weights) {
+    Response.json(dbWeight);
+  });
+});
 
-  router.get('/weights/:id', isAuthenticated, function(req, res) {
-    Weight.findOne({
+// UPDATE
+router.put("/api/weights", isAuthenticated, function(req, res) {
+  db.Weight.update(
+    req.body,
+    {
       where: {
-        id: req.params.id
-      },
-      include: ['user']
-    })
-    .then(function(weights) {
-      res.render('weights', {
-        title: 'Weight',
-        weight: weight,
-        user: user,
-      });
+        id: req.body.id
+      }
+    }).then(function(dbWeight) {
+      res.json(dbWeight);
     });
+});
+
+// DELETE
+router.delete("/api/weights/:id", isAuthenticated, function(req, res){
+  db.Weight.destroy({
+    where: {
+      id: req.params.id
+    }
+  }).then(function(dbWeight){
+    res.json(dbWeight);
   });
+});
 
 
-
-/**************************
-    Weight CRUD API
-***************************/
-
-// Create Weight
-router.post('/api/weights', weightsController.create);
 
   module.exports = router;
