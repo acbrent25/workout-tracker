@@ -1,5 +1,20 @@
 <% include partials/header %>
 
+<style>
+.btn-success, .btn-danger {
+    float: right;
+}
+
+#todosWell li {
+  clear: both;
+  margin: 28px 0;
+  list-style-type: none;
+}
+
+#todosWell ul {
+    padding-inline-start: 0;
+}
+</style>
 <div class="jumbotron">
    <h1 class="display-4"><%= title %></h1>
    <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
@@ -47,9 +62,14 @@
     *           SHOW TODOS
     * ******************************************/
     function getTodos(){
+      
+      // Clear Well
+      $(todosWell).empty();
+      
+      // Get Data
       $.get("/api/todos", function(data){
         
-        // Setu up Main <ul> and appendTo todos well
+        // Setup up Main <ul> and appendTo todos well
         var ul = $('<ul/>', {
           id: 'todo_ul'
         }).appendTo('#todosWell');
@@ -69,11 +89,11 @@
             }).appendTo('#todo_ul');
             
             // Setup edit and delete buttons
-            var todo_edit_btn = '<button class="btn btn-success ml-2" id="' + todosObj[i].id + '"><i class="fas fa-pen"></i></button>';
-            $(todo_edit_btn).appendTo('#todo_li_' + todosObj[i].id);
-            
             var todo_delete_btn = '<button class="btn btn-danger ml-2 deleteTodo" id="' + todosObj[i].id + '"><i class="fas fa-trash-alt"></i></button>';
             $(todo_delete_btn).appendTo('#todo_li_' + todosObj[i].id);
+
+            var todo_edit_btn = '<button class="btn btn-success ml-2 editTodo" id="' + todosObj[i].id + '"><i class="fas fa-pen"></i></button>';
+            $(todo_edit_btn).appendTo('#todo_li_' + todosObj[i].id);
             
             var todoId = todosObj[i].id;
             // Setup todo items
@@ -94,7 +114,6 @@
               }
             }
             
-          
         }  
 
       });
@@ -109,6 +128,7 @@
     
     function handleFormSubmit(e){
       e.preventDefault();
+
       // If Todo Title is empty, don't submit
       if(!titleInput){
         return;
@@ -118,35 +138,66 @@
         title: titleInput.val().trim()
       }
       submitTodo(newTodo);
+      $('#todo').val('');
     }
     // Submit the Todo
-    function submitTodo(post){
-      $.post("/api/todos", post, function(){
-        window.location.href = "/todos";
-      });
+    function submitTodo(newTodo){
+      $.post("/api/todos", newTodo)
+          .then(getTodos);
     }
 
     /********************************************
     *            DELETE TODO
     * ******************************************/
 
-  $(document).on("click", ".deleteTodo", handleDeleteTodo);
-   
-  
-  function handleDeleteTodo(){
-
+    $(document).on("click", ".deleteTodo", handleDeleteTodo);
+    function handleDeleteTodo(){
       var thisId = $(this).attr('id');
-      console.log('cicked: ' + thisId);
-      
       $.ajax({
         method: 'DELETE',
         url: "/api/todos/" + thisId
-      }).done(window.location.href = "/todos");
+      }).done(getTodos);
+    }
 
-   
+    /********************************************
+    *            EDIT TODO
+    * ******************************************/
+
+   $(document).on("click", ".editTodo", handleEditTodo);
+
+   function handleEditTodo(){
+     //alert('clicked');
+     var thisId = $(this).attr('id');
+     var thisText = $('#todo_li_' + thisId).text();
+     
+     $('#todo_li_' + thisId).html('<input id="'+ thisId+ '" type="text" class="form-control" value="'+ thisText +'"></input>');
+    
+     $('input#' + thisId).keypress(function (e) {
+      if (e.which == 13) {
+
+        title = $('input#' + thisId).val();
+        var updatedTodo = {
+          title: title
+        }
+        console.log('updatedTodo: ' + updatedTodo);
+        $.ajax({
+          method: 'PUT',
+          // contentType: "application/json",
+          data: updatedTodo,
+          url: "/api/todos/" + thisId,
+          error: function(e) {
+            console.log(e);
+          },
+          // dataType: "json",
+          // contentType: "application/json"
+        }).then(getTodos);
+        
+      }
+    });
+
 
    }
-    
+
 
 
   });

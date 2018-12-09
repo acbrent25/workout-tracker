@@ -21,10 +21,7 @@ module.exports = {
   retrieve(req, res) {
     return Todo
       .findById(req.params.todoId, {
-        include: [{
-          model: TodoItem,
-          as: 'todoItems',
-        }],
+        include: [TodoItem],
       })
       .then(todo => {
         if (!todo) {
@@ -39,10 +36,7 @@ module.exports = {
   update(req, res) {
     return Todo
       .findById(req.params.todoId, {
-        include: [{
-          model: TodoItem,
-          as: 'todoItems',
-        }],
+        include: [TodoItem],
       })
       .then(todo => {
         if (!todo) {

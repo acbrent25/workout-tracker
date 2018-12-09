@@ -11,8 +11,6 @@ router.get('/api', (req, res) => res.status(200).send({
     TODO CRUD API
 ***************************/
 
-// Create Todo
-router.post('/create/todo', todosController.create);
 
 // Create Todo
 router.post('/api/todos', todosController.create);
