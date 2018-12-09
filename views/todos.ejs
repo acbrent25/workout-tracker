@@ -50,14 +50,18 @@
         console.log(data);
         todos = data;
         todosObj = todos.todos;
-        console.log("todos: " + todos.todos[1].id);
-        console.log("hello todo");
         for(var i = 0; i < todosObj.length; i++){
           console.log('inside for loop');
-          var li = $('<li/>', {
-            id: todosObj[i].id,
-            text: todosObj[i].title
-          }).appendTo('#todo_ul');
+            var li = $('<li/>', {
+              id: todosObj[i].id,
+              text: todosObj[i].title
+            }).appendTo('#todo_ul');
+            console.log(todosObj[i].TodoItems[0]);
+            var todoItemsObj = todosObj[i].TodoItems;
+          // for(var j = 0; j < todoItemsObj[i].length; j++){
+          //   console.log(todosObj[j]);
+          // }
+          
         }  
 
       });
