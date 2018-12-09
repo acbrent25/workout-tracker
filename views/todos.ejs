@@ -8,17 +8,23 @@
    <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
  </div>
 
- <form id="addTodo">
-  <div class="form-group">
-    <input type="text" class="form-control" id="todo" name="title" aria-describedby="todo" placeholder="Enter todo">
-  </div>
-
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-
  <div class="container">
    <div class="row">
-     <div class="col">
+     <div class="col-md-8 mx-auto">
+        <form id="addTodo">
+          <div class="form-group">
+            <input type="text" class="form-control" id="todo" name="title" aria-describedby="todo" placeholder="Enter todo">
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+     </div>
+   </div>
+ </div>
+
+
+ <div class="container mt-4">
+   <div class="row">
+     <div class="col-md-8 mx-auto">
         <div id="todosWell">
 
         </div>
@@ -50,17 +56,31 @@
         console.log(data);
         todos = data;
         todosObj = todos.todos;
+        // Setup loop for todos
         for(var i = 0; i < todosObj.length; i++){
           console.log('inside for loop');
             var li = $('<li/>', {
-              id: todosObj[i].id,
+              id: 'todo_li' + todosObj[i].id,
               text: todosObj[i].title
             }).appendTo('#todo_ul');
-            console.log(todosObj[i].TodoItems[0]);
+            
+            // Setup todo items
             var todoItemsObj = todosObj[i].TodoItems;
-          // for(var j = 0; j < todoItemsObj[i].length; j++){
-          //   console.log(todosObj[j]);
-          // }
+            for(var j = 0; j < todoItemsObj.length; j++){
+              console.log('inside j loop: ' + todoItemsObj[j].content);
+              
+              if(todoItemsObj[j].content){
+                var item_ul = $('<ul/>', {
+                  id: 'item_ul_' + todosObj[i].id,
+                }).appendTo('#todo_li' + todosObj[i].id);
+                
+                var item_li = $('<li/>', {
+                  id: todoItemsObj[j].id,
+                  text: todoItemsObj[j].content
+                }).appendTo('#item_ul_' + todosObj[i].id);
+              }
+            }
+            
           
         }  
 
