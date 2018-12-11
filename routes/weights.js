@@ -26,7 +26,7 @@ router.get('/api/weights/:id', isAuthenticated, function(req, res) {
     where: {
       id: req.params.id
     },
-    include: [db.Author]
+    include: [db.User]
   }).then(function(weights) {
     Response.json(dbWeight);
   });

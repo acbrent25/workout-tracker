@@ -13,6 +13,7 @@ const users = require('./users');
 // HTML Routes 
 const staticHome = require('./html/home');
 const staticTodo = require('./html/todos');
+const staticWeights = require('./html/weights');
 
 // Use API Routes Routes
 router.use(auth);
@@ -24,6 +25,7 @@ router.use(users);
 // USE HTML ROUTES
 router.use(staticHome);
 router.use(staticTodo);
+router.use(staticWeights);
 
 
 
