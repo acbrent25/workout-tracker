@@ -1,61 +1,43 @@
 var router = require('express').Router();
 
-
 const db = require('../models');
+const weightsController = require('../controllers/weightsController');
 const isAuthenticated = require('../config/middleware/isAuthenticated');
 
-// SHOW 
-router.get('/api/weights', isAuthenticated, function(req, res) {
-    db.Weight.findAll({
-      include: [db.User]
-    }).then(function(dbWeight) {
-      res.json(dbWeight);
-    });
-  });
+/**************************
+    Weight CRUD API
+***************************/
 
-// CREATE 
-router.post('/api/weights', isAuthenticated, function(req, res){
-  db.Post.create(req.body).then(function(dbWeight) {
-    res.json(dbWeight);
-  });
-});
 
-// READ
-router.get('/api/weights/:id', isAuthenticated, function(req, res) {
-  db.Weight.findOne({
-    where: {
-      id: req.params.id
-    },
-    include: [db.User]
-  }).then(function(weights) {
-    Response.json(dbWeight);
+// Create Weight
+router.post('/api/weights/', isAuthenticated, function(req,res){
+
+  //console.log("req", req);
+
+  var currentUser = req.user.id;
+  console.log('currentUser: ' + currentUser);
+  var weight = req.body.weight;
+
+  var newWeight = {
+    UserId: currentUser,
+    weight: weight
+  }
+
+  db.Weight.create(newWeight).then(function(newWeight) {
+    res.json(newWeight);
   });
 });
+  
+// Read Weight (single)
+router.get('/api/weights/:weightId', weightsController.retrieve);
 
-// UPDATE
-router.put("/api/weights", isAuthenticated, function(req, res) {
-  db.Weight.update(
-    req.body,
-    {
-      where: {
-        id: req.body.id
-      }
-    }).then(function(dbWeight) {
-      res.json(dbWeight);
-    });
-});
+// Read Weights (all)
+router.get('/api/weights', weightsController.list);
 
-// DELETE
-router.delete("/api/weights/:id", isAuthenticated, function(req, res){
-  db.Weight.destroy({
-    where: {
-      id: req.params.id
-    }
-  }).then(function(dbWeight){
-    res.json(dbWeight);
-  });
-});
+// Update Weight
+router.put('/api/weights/:weightId', weightsController.update);
 
+// Delete Weight 
+router.delete('/api/weights/:weightId', weightsController.destroy);
 
-
-  module.exports = router;
+module.exports = router;

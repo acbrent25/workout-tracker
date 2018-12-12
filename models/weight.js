@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     Weight.belongsTo(models.User, {
       foreignKey: {
+        foreignKey: "UserId",
         allowNull: false
       }
     });
