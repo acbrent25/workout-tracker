@@ -12,8 +12,6 @@ const isAuthenticated = require('../config/middleware/isAuthenticated');
 // Create Weight
 router.post('/api/weights/', isAuthenticated, function(req,res){
 
-  //console.log("req", req);
-
   var currentUser = req.user.id;
   console.log('currentUser: ' + currentUser);
   var weight = req.body.weight;
@@ -23,10 +21,26 @@ router.post('/api/weights/', isAuthenticated, function(req,res){
     weight: weight
   }
 
-  db.Weight.create(newWeight).then(function(newWeight) {
-    res.json(newWeight);
-  });
+  db.Weight
+    .create(newWeight)
+    .then(function(newWeight) {
+      res.json(newWeight);
+    });
 });
+
+router.get('/weights', function(req, res){
+
+  db.Weight.findAll({
+    include: [db.User],
+    }).then(function(weights){
+      console.log(weights)
+      res.render("weights", {
+        weights:weights,
+        title: "Weights Fucka!"
+      });
+    })
+});
+
   
 // Read Weight (single)
 router.get('/api/weights/:weightId', weightsController.retrieve);
