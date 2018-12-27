@@ -36,7 +36,7 @@ router.get('/weights', function(req, res){
       console.log(weights)
       res.render("weights", {
         weights:weights,
-        title: "Weights Fucka!"
+        title: "Weight Tracker"
       });
     })
 });
